@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Trắc nghiệm Địa lí 11 | Trung Quốc (32 câu)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', 'Roboto', 'Noto Sans', sans-serif;
+        }
+        body {
+            background: #eef3fc;
+            margin: 0;
+            padding: 24px 20px;
+        }
+        .quiz-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .quiz-header {
+            background: #1a4d6b;
+            padding: 20px 28px;
+            color: white;
+        }
+        .quiz-header h1 {
+            margin: 0 0 6px;
+            font-size: 1.9rem;
+        }
+        .quiz-header p {
+            margin: 0;
+            opacity: 0.85;
+        }
+        .stats-panel {
+            background: #f2f6fa;
+            padding: 12px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 1px solid #d4e2ef;
+            font-weight: 500;
+        }
+        .question-badge {
+            background: #1a4d6b;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 60px;
+            font-size: 0.9rem;
+        }
+        .score-area {
+            background: #e6edf4;
+            padding: 6px 16px;
+            border-radius: 40px;
+            color: #0a3b50;
+            font-weight: 600;
+        }
+        .quiz-body {
+            padding: 24px 28px 32px;
+        }
+        .question-card {
+            background: #fefefe;
+            border-radius: 28px;
+            padding: 8px 4px 12px 4px;
+        }
+        .question-text {
+            font-size: 1.45rem;
+            font-weight: 600;
+            color: #0c2e42;
+            line-height: 1.4;
+            background: #f9fbfe;
+            padding: 18px 20px;
+            border-radius: 32px;
+            border: 1px solid #e3edf6;
+            margin-bottom: 28px;
+        }
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 35px;
+        }
+        .opt {
+            background: white;
+            border: 2px solid #dce6f0;
+            border-radius: 100px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            gap: 14px;
+        }
+        .opt:hover {
+            background: #f1f8ff;
+            border-color: #7fadcc;
+        }
+        .opt.selected {
+            background: #e3f0fa;
+            border-color: #1a6b8a;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .opt-prefix {
+            font-weight: 800;
+            background: #eef2f7;
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 60px;
+            color: #1c5777;
+        }
+        .opt.selected .opt-prefix {
+            background: #1a6b8a;
+            color: white;
+        }
+        .opt-text {
+            font-size: 1rem;
+            line-height: 1.35;
+            color: #1d2f3c;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        button {
+            background: #eef2f7;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #1a4d6b;
+        }
+        button.primary {
+            background: #1a6b8a;
+            color: white;
+        }
+        button.primary:hover {
+            background: #0e4d66;
+        }
+        button:active {
+            transform: scale(0.97);
+        }
+        .submit-area {
+            margin-top: 35px;
+            text-align: center;
+            border-top: 1px solid #e2ecf5;
+            padding-top: 28px;
+        }
+        .result-summary {
+            background: #eef5f9;
+            border-radius: 28px;
+            padding: 18px 22px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .footer-note {
+            font-size: 0.75rem;
+            text-align: center;
+            color: #6f8faa;
+            margin-top: 28px;
+            padding-bottom: 18px;
+        }
+        @media (max-width: 600px) {
+            .quiz-body { padding: 18px; }
+            .question-text { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="quiz-wrapper">
+    <div class="quiz-header">
+        <h1>🇨🇳 Trắc nghiệm ĐỊA LÍ 11</h1>
+        <p>Phần: CỘNG HÒA NHÂN DÂN TRUNG HOA | 32 câu (Vị trí, tự nhiên, dân cư, kinh tế)</p>
+    </div>
+    <div class="stats-panel">
+        <div class="question-badge" id="questionCounter">Câu 1 / 32</div>
+        <div class="score-area" id="scoreDisplay">📌 Đã trả lời: 0/32</div>
+    </div>
+    <div class="quiz-body">
+        <div class="question-card">
+            <div class="question-text" id="questionText">Đang tải câu hỏi...</div>
+            <div class="options-grid" id="optionsContainer"></div>
+            <div class="nav-buttons">
+                <button id="prevBtn" class="primary">◀ Câu trước</button>
+                <button id="nextBtn" class="primary">Câu tiếp theo ▶</button>
+            </div>
+        </div>
+        <div class="submit-area">
+            <button id="submitBtn" style="background:#236b4e; color:white; padding: 12px 32px;">📝 NỘP BÀI & XEM KẾT QUẢ</button>
+            <button id="resetBtn" style="background:#cfdfed; margin-left:12px;">🔄 Làm lại</button>
+        </div>
+        <div id="resultPanel" class="result-summary" style="display: none;"></div>
+        <div class="footer-note">
+            ✅ Dựa theo ĐỀ CƯƠNG ÔN TẬP CUỐI KÌ II – Địa lí 11 (Trung Quốc, câu 1 → 32)
+        </div>
+    </div>
+</div>
+
+<script>
+    // ---------- DANH SÁCH CÂU HỎI (32 câu, mỗi câu 4 đáp án A,B,C,D) ----------
+    const questions = [
+        { text: "Câu 1: Đặc điểm tự nhiên của miền Đông Trung Quốc là có", 
+          options: ["A. các đồng bằng châu thổ rộng lớn, đất phù sa màu mỡ.", 
+                    "B. các dãy núi cao, sơn nguyên đồ sộ xen lẫn các bồn địa.", 
+                    "C. nhiều tài nguyên rừng, nhiều khoáng sản và đồng cỏ.", 
+                    "D. thượng nguồn của các sông lớn theo hướng tây đông."], 
+          correct: 0 },
+        { text: "Câu 2: Đặc điểm tự nhiên của miền Tây Trung Quốc là có", 
+          options: ["A. các đồng bằng châu thổ rộng lớn, đất phù sa màu mỡ.", 
+                    "B. các dãy núi cao, sơn nguyên đồ sộ xen lẫn các bồn địa.", 
+                    "C. kiểu khí hậu cận nhiệt đới gió mùa và ôn đới gió mùa.", 
+                    "D. nhiều tài nguyên khoáng sản kim loại màu nổi tiếng."], 
+          correct: 1 },
+        { text: "Câu 3: Miền Tây Trung Quốc là nơi có", 
+          options: ["A. nhiều hoang mạc và bán hoang mạc rộng lớn.", 
+                    "B. nhiều đồng bằng châu thổ rộng, đất màu mỡ.", 
+                    "C. các loại khoáng sản kim loại màu nổi tiếng.", 
+                    "D. khí hậu cận nhiệt đới gió mùa, ôn đới gió mùa."], 
+          correct: 0 },
+        { text: "Câu 4: Phát biểu nào sau đây không đúng về sự tương phản của thiên nhiên giữa miền Đông và miền Tây Trung Quốc?", 
+          options: ["A. Đồng bằng châu thổ rộng lớn ở phía đông; núi cao, cao nguyên đồ sộ ở phía tây.", 
+                    "B. Thượng nguồn sông ở phía đông dốc, hẹp; hạ lưu ở phía đông thoải, lòng rộng.", 
+                    "C. Miền Tây nhiều rừng, đồng cỏ; miền Đông có đất đai phù sa màu mỡ, nhiều lụt.", 
+                    "D. Miền Tây có khí hậu lục địa khắc nghiệt, miền Đông khí hậu hải dương ôn hòa."], 
+          correct: 2 },
+        { text: "Câu 5: Các kiểu khí hậu chủ yếu ở miền Đông Trung Quốc là", 
+          options: ["A. cận nhiệt đới gió mùa, ôn đới gió mùa.", 
+                    "B. ôn đới gió mùa, nhiệt đới gió mùa.", 
+                    "C. nhiệt đới gió mùa, cận xích đạo.", 
+                    "D. cận xích đạo, cận nhiệt đới gió mùa."], 
+          correct: 0 },
+        { text: "Câu 6: Điểm tương đồng giữa miền Đông và miền Tây Trung Quốc là", 
+          options: ["A. có nhiều khoáng sản.", 
+                    "B. đất đai màu mỡ.", 
+                    "C. địa hình bằng phẳng.", 
+                    "D. sông ngòi ít dốc."], 
+          correct: 0 },
+        { text: "Câu 7: Khí hậu chủ yếu ở miền Tây Trung Quốc là", 
+          options: ["A. ôn đới lục địa.", 
+                    "B. ôn đới gió mùa.", 
+                    "C. cận nhiệt đới.", 
+                    "D. nhiệt đới."], 
+          correct: 0 },
+        { text: "Câu 8: Loại khoáng sản của Trung Quốc chiếm hơn một nửa tổng trữ lượng thế giới là", 
+          options: ["A. than đá.", "B. đất hiếm.", "C. dầu mỏ.", "D. mangan."], 
+          correct: 1 },
+        { text: "Câu 9: Dân tộc đông nhất ở Trung Quốc là", 
+          options: ["A. Choang.", "B. Hán.", "C. Tạng.", "D. Hồi."], 
+          correct: 1 },
+        { text: "Câu 10: Miền Đông Trung Quốc là nơi sinh sống tập trung của dân tộc", 
+          options: ["A. Choang.", "B. Hán.", "C. Tạng.", "D. Hồi."], 
+          correct: 1 },
+        { text: "Câu 11: Dân cư Trung Quốc phân bố tập trung chủ yếu ở các", 
+          options: ["A. đồng bằng phù sa ở miền Đông.", 
+                    "B. sơn nguyên, bồn địa ở miền Tây.", 
+                    "C. khu vực biên giới phía bắc.", 
+                    "D. khu vực ven biển ở phía nam."], 
+          correct: 0 },
+        { text: "Câu 12: Phát biểu nào sau đây đúng với cơ cấu dân số thành thị và nông thôn Trung Quốc hiện nay?", 
+          options: ["A. Dân thành thị tăng, dân nông thôn giảm.", 
+                    "B. Dân nông thôn tăng, dân thành thị giảm.", 
+                    "C. Dân nông thôn tăng, dân thành thị tăng.", 
+                    "D. Dân thành thị không tăng, nông thôn giảm."], 
+          correct: 0 },
+        { text: "Câu 13: Việc phân bố dân cư khác nhau rất lớn giữa miền Đông và miền Tây Trung Quốc đã gây ra khó khăn chủ yếu nhất về", 
+          options: ["A. sử dụng hợp lí tài nguyên và lao động.", 
+                    "B. nâng cao chất lượng cuộc sống dân cư.", 
+                    "C. việc bảo vệ tài nguyên và môi trường.", 
+                    "D. phòng chống các thiên tai hàng năm."], 
+          correct: 0 },
+        { text: "Câu 14: Điểm khác biệt của miền Tây Trung Quốc với miền Đông là", 
+          options: ["A. nhiều tài nguyên khoáng sản.", 
+                    "B. diện tích tự nhiên rộng lớn.", 
+                    "C. có các dân tộc khác nhau.", 
+                    "D. có mật độ dân cư nhỏ bé."], 
+          correct: 3 },
+        { text: "Câu 15: Phát biểu nào sau đây không đúng với miền Đông Trung Quốc?", 
+          options: ["A. Truyền thống dân cư cần cù, sáng tạo.", 
+                    "B. Mật độ dân cư cao, dân sống đông đúc.", 
+                    "C. Có nhiều đô thị với quy mô dân số lớn.", 
+                    "D. Tập trung chủ yếu các dân tộc ít người."], 
+          correct: 3 },
+        { text: "Câu 16: Phát biểu nào sau đây không đúng với tình hình xã hội Trung Quốc?", 
+          options: ["A. Phát triển giáo dục được đầu tư chú trọng.", 
+                    "B. Phân hóa giàu nghèo ngày càng rõ rệt hơn.", 
+                    "C. Chất lượng cuộc sống người dân tăng lên.", 
+                    "D. Không có sự chênh lệch giữa vùng, miền."], 
+          correct: 3 },
+        { text: "Câu 17: Nền kinh tế Trung Quốc hiện nay đứng thứ", 
+          options: ["A. hai thế giới.", "B. ba thế giới.", "C. tư thế giới.", "D. năm thế giới."], 
+          correct: 0 },
+        { text: "Câu 18: Trong khoảng hai thập niên cuối thế kỉ XX, Trung Quốc đứng đầu thế giới về", 
+          options: ["A. tổng sản phẩm quốc nội.", "B. GDP bình quân đầu người.", 
+                    "C. tốc độ tăng trưởng kinh tế.", "D. đầu tư nước ngoài (FDI)."], 
+          correct: 2 },
+        { text: "Câu 19: Theo bảng số liệu, nhận xét nào đúng về sự chuyển dịch cơ cấu GDP của Trung Quốc giai đoạn 1985 - 2021?", 
+          options: ["A. Nông nghiệp giảm, công nghiệp giảm, dịch vụ tăng.", 
+                    "B. Nông nghiệp tăng, công nghiệp tăng, dịch vụ giảm.", 
+                    "C. Nông nghiệp giảm, công nghiệp tăng, dịch vụ tăng.", 
+                    "D. Nông nghiệp tăng, công nghiệp giảm, dịch vụ tăng."], 
+          correct: 2 },
+        { text: "Câu 20: Phát biểu nào sau đây không đúng về thành tựu của công cuộc hiện đại hóa Trung Quốc?", 
+          options: ["A. Giao lưu ngoài nước hạn chế, giao lưu trong nước phát triển.", 
+                    "B. Nhiều năm có tốc độ tăng trưởng kinh tế cao nhất thế giới.", 
+                    "C. Tổng thu nhập quốc dân vươn lên vị trí cao ở trên thế giới.", 
+                    "D. Thu nhập bình quân đầu người tăng nhiều lần so với trước."], 
+          correct: 0 },
+        { text: "Câu 21: Phát biểu nào sau đây không đúng với công nghiệp Trung Quốc hiện nay?", 
+          options: ["A. Tích cực thu hút đầu tư nước ngoài.", 
+                    "B. Tập trung vào các ngành truyền thống.", 
+                    "C. Tăng cường xuất, nhập khẩu hàng hóa.", 
+                    "D. Chú ý ứng dụng các công nghệ cao."], 
+          correct: 1 },
+        { text: "Câu 22: Trong quá trình chuyển đổi sang kinh tế thị trường, Trung Quốc khá thành công trong việc", 
+          options: ["A. thu hút đầu tư nước ngoài, ứng dụng công nghệ cao trong công nghiệp.", 
+                    "B. hiện đại hóa trang bị máy móc, lập kế hoạch sản xuất hàng năm cố định.", 
+                    "C. chủ động đầu tư trong nước, hạn chế đến mức tối đa giao lưu ngoài nước.", 
+                    "D. hạn chế giao lưu hàng hóa trong nước, thu hút mạnh đầu tư nước ngoài."], 
+          correct: 0 },
+        { text: "Câu 23: Trong phát triển công nghiệp, Trung Quốc không thực hiện việc", 
+          options: ["A. tiến hành mở cửa và thu hút mạnh đầu tư nước ngoài.", 
+                    "B. ứng dụng công nghệ cao và tạo các doanh nghiệp lớn.", 
+                    "C. phát triển công nghệ thông tin, sinh học, chế tạo máy.", 
+                    "D. lập kế hoạch sản xuất hàng năm cố định, kế hoạch hóa."], 
+          correct: 3 },
+        { text: "Câu 24: Phát biểu nào sau đây không đúng với công nghiệp Trung Quốc?", 
+          options: ["A. Các ngành công nghiệp đều có tốc độ tăng trưởng nhanh.", 
+                    "B. Dẫn đầu thế giới trong các ngành luyện thép, luyện nhôm.", 
+                    "C. Các sản phẩm thiết bị công nghệ cao phát triển rất nhanh.", 
+                    "D. Tập trung ở phần phía tây lãnh thổ, thưa thớt ở phía đông."], 
+          correct: 3 },
+        { text: "Câu 25: Điều kiện thuận lợi nhất để Trung Quốc phát triển mạnh công nghiệp sản xuất hàng tiêu dùng là", 
+          options: ["A. nguyên liệu phong phú, dân cư đông đúc.", 
+                    "B. dân cư đông đúc, máy móc hiện đại.", 
+                    "C. máy móc hiện đại, nguyên liệu dồi dào.", 
+                    "D. nguyên liệu dồi dào, nơi phân bố rộng."], 
+          correct: 0 },
+        { text: "Câu 26: Điều kiện thuận lợi nhất để Trung Quốc phát triển ngành công nghiệp khai khoáng là", 
+          options: ["A. kĩ thuật hiện đại.", "B. lao động dồi dào.", "C. khoáng sản phong phú.", "D. nhu cầu rất lớn."], 
+          correct: 2 },
+        { text: "Câu 27: Điều kiện thuận lợi nhất để Trung Quốc phát triển công nghiệp luyện kim đen là", 
+          options: ["A. kĩ thuật hiện đại.", "B. lao động đông đảo.", "C. nguyên liệu dồi dào.", "D. nhu cầu rất lớn."], 
+          correct: 2 },
+        { text: "Câu 28: Ngành nào sau đây không được chú trọng phát triển trong chính sách công nghiệp mới của Trung Quốc?", 
+          options: ["A. Chế tạo máy.", "B. Điện tử.", "C. Hóa dầu.", "D. Luyện kim."], 
+          correct: 3 },
+        { text: "Câu 29: Chính sách công nghiệp mới của Trung Quốc tập trung phát triển các ngành có thể", 
+          options: ["A. tăng nhanh năng suất và đáp ứng nhu cầu ở mức cao hơn của người dân.", 
+                    "B. đáp ứng nhu cầu ở mức cao hơn của người dân và tạo ra sản lượng lớn.", 
+                    "C. tạo ra sản lượng lớn và đáp ứng nhu cầu ở mức bình thường của dân cư.", 
+                    "D. đáp ứng nhu cầu ở mức bình thường của người dân và sản phẩm tốt hơn."], 
+          correct: 1 }, 
+        { text: "Câu 30: Các ngành công nghiệp nào sau đây góp phần quyết định chủ yếu vào việc chế tạo thành công tàu vũ trụ ở Trung Quốc?", 
+          options: ["A. Điện tử, cơ khí chính xác, sản xuất máy tự động.", 
+                    "B. Điện tử, luyện kim đen, sản xuất máy tự động.", 
+                    "C. Điện tử, luyện kim màu, sản xuất máy tự động.", 
+                    "D. Điện tử, năng lượng, sản xuất máy tự động."], 
+          correct: 0 },
+        { text: "Câu 31: Lợi ích của việc phát triển các ngành công nghiệp ở địa bàn nông thôn Trung Quốc không phải là", 
+          options: ["A. sử dụng lực lượng lao động dồi dào tại chỗ.", 
+                    "B. tận dụng nguyên vật liệu sẵn có ở nông thôn.", 
+                    "C. đảm bảo các nhu cầu thiết yếu của người dân.", 
+                    "D. tạo nguồn hàng xuất khẩu lớn ra nước ngoài."], 
+          correct: 3 },
+        { text: "Câu 32: Các ngành công nghiệp phát triển ở địa bàn nông thôn Trung Quốc không phải là", 
+          options: ["A. điện tử, luyện kim.", 
+                    "B. vật liệu xây dựng, sứ.", 
+                    "C. đồ gốm, dệt may.", 
+                    "D. sản xuất hàng tiêu dùng."], 
+          correct: 0 }
+    ];
+
+    // ---------- Trạng thái ----------
+    let userAnswers = new Array(questions.length).fill(null);   // lưu chỉ số đáp án đã chọn (0,1,2,3)
+    let currentIndex = 0;
+    let submitted = false;
+
+    // DOM elements
+    const questionText = document.getElementById("questionText");
+    const optionsContainer = document.getElementById("optionsContainer");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const submitBtn = document.getElementById("submitBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const resultPanel = document.getElementById("resultPanel");
+    const questionCounterSpan = document.getElementById("questionCounter");
+    const scoreDisplaySpan = document.getElementById("scoreDisplay");
+
+    function updateStats() {
+        const answeredCount = userAnswers.filter(a => a !== null).length;
+        scoreDisplaySpan.innerHTML = `📌 Đã trả lời: ${answeredCount}/${questions.length}`;
+        questionCounterSpan.innerHTML = `Câu ${currentIndex+1} / ${questions.length}`;
+    }
+
+    function renderCurrentQuestion() {
+        const q = questions[currentIndex];
+        questionText.innerHTML = q.text;
+        const selectedIdx = userAnswers[currentIndex];
+        optionsContainer.innerHTML = '';
+        q.options.forEach((opt, idx) => {
+            const optDiv = document.createElement('div');
+            optDiv.className = 'opt';
+            if (selectedIdx === idx) optDiv.classList.add('selected');
+            const prefixSpan = document.createElement('span');
+            prefixSpan.className = 'opt-prefix';
+            prefixSpan.innerText = String.fromCharCode(65+idx); // A,B,C,D
+            const textSpan = document.createElement('span');
+            textSpan.className = 'opt-text';
+            textSpan.innerText = opt;
+            optDiv.appendChild(prefixSpan);
+            optDiv.appendChild(textSpan);
+            optDiv.addEventListener('click', (e) => {
+                if (submitted) return;
+                // chọn mới
+                if (userAnswers[currentIndex] === idx) {
+                    // bỏ chọn? theo thường lệ vẫn giữ hoặc có thể bỏ, nhưng để tiện, giữ nguyên nhưng thường không bỏ. Nếu muốn bỏ thì set null. Nhưng thường trắc nghiệm không bỏ. 
+                    // Nhưng ta cho phép bỏ bằng click lại? Tốt hơn là giữ nguyên hoặc switch? Theo UX: click lại bỏ chọn.
+                    userAnswers[currentIndex] = null;
+                } else {
+                    userAnswers[currentIndex] = idx;
+                }
+                updateStats();
+                renderCurrentQuestion(); 
+            });
+            optionsContainer.appendChild(optDiv);
+        });
+    }
+
+    function goPrev() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            renderCurrentQuestion();
+            updateStats();
+        }
+    }
+    function goNext() {
+        if (currentIndex < questions.length-1) {
+            currentIndex++;
+            renderCurrentQuestion();
+            updateStats();
+        }
+    }
+
+    function calculateScore() {
+        let correctCount = 0;
+        for (let i=0; i<questions.length; i++) {
+            if (userAnswers[i] !== null && userAnswers[i] === questions[i].correct) {
+                correctCount++;
+            }
+        }
+        return correctCount;
+    }
+
+    function showResults() {
+        submitted = true;
+        const correctCount = calculateScore();
+        const total = questions.length;
+        const percent = Math.round((correctCount/total)*100);
+        let resultHtml = `<h3>📊 KẾT QUẢ BÀI LÀM</h3>
+                          <p>✅ Số câu đúng: <strong>${correctCount}</strong> / ${total}</p>
+                          <p>🎯 Tỉ lệ: ${percent}%</p>
+                          <div style="margin-top:12px; font-size:0.9rem;">📘 Chi tiết đáp án:</div>`;
+        for (let i=0; i<questions.length; i++) {
+            const userChoice = userAnswers[i];
+            const isCorrect = (userChoice !== null && userChoice === questions[i].correct);
+            const userLetter = userChoice !== null ? String.fromCharCode(65+userChoice) : "Chưa trả lời";
+            const correctLetter = String.fromCharCode(65+questions[i].correct);
+            const status = isCorrect ? "✔️" : (userChoice===null ? "❌ (bỏ trống)" : "❌");
+            resultHtml += `<div style="border-top:1px solid #cbdde9; padding: 6px 2px; font-size:0.85rem;">
+                            <b>Câu ${i+1}:</b> ${status} &nbsp; <span style="color:#175e7a;">Bạn chọn: ${userLetter}</span> &nbsp; | Đáp án đúng: ${correctLetter}
+                            </div>`;
+        }
+        resultHtml += `<button id="closeResultBtn" style="margin-top:16px; background:#1a6b8a; color:white; padding:6px 20px;">📖 Tiếp tục xem lại câu hỏi</button>`;
+        resultPanel.innerHTML = resultHtml;
+        resultPanel.style.display = "block";
+        const closeBtn = document.getElementById("closeResultBtn");
+        if (closeBtn) closeBtn.onclick = () => { resultPanel.style.display = "none"; };
+        updateStats();
+        renderCurrentQuestion();  
+    }
+
+    function resetQuiz() {
+        userAnswers = new Array(questions.length).fill(null);
+        submitted = false;
+        currentIndex = 0;
+        resultPanel.style.display = "none";
+        resultPanel.innerHTML = "";
+        updateStats();
+        renderCurrentQuestion();
+    }
+
+    // attach events
+    prevBtn.addEventListener("click", () => { if(!submitted) goPrev(); else alert("Đã nộp bài, nhấn 'Làm lại' để làm mới."); });
+    nextBtn.addEventListener("click", () => { if(!submitted) goNext(); else alert("Đã nộp bài, hãy nhấn 'Làm lại' để bắt đầu bài mới."); });
+    submitBtn.addEventListener("click", () => {
+        if(submitted) {
+            alert("Bạn đã nộp bài rồi! Nhấn 'Làm lại' để làm lại từ đầu.");
+            return;
+        }
+        showResults();
+    });
+    resetBtn.addEventListener("click", () => { resetQuiz(); });
+
+    // init
+    renderCurrentQuestion();
+    updateStats();
+</script>
+</body>
+</html>
